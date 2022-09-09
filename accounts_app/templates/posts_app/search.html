@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Search{% endblock %}
+
+
+{% block includes %}
+  {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block content %}
+<form class="form-inline" method="GET">
+  <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search Users" aria-label="Search">
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<br><br><br>
+{% if search_users %}
+  {% for users in result %}
+    <div class="row">
+      <div class="col-sm-2">
+        {% if users.user_profile.profile_pic %}
+        <img src="{{ users.user_profile.profile_pic.url }}" width="65px" height="65px" alt="default profile pic" class="rounded-circle">
+        {% else %}
+        <img src="{% static 'accounts_app/images/profile.png' %}" width="65px" height="65px" alt="default profile pic" class="rounded-circle">
+        {% endif %}
+      </div>
+
+      <div class="col-sm-10">
+        <a href="{% url 'searched-user' username=users.username %}"><h6>{{ users.username }}</h6></a>
+
+      </div>
+    </div>
+  {% empty %}
+    <p>There are no users with this username</p>
+  {% endfor %}
+{% endif %}
+{% endblock %}

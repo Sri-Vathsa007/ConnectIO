@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Searched User{% endblock %}
+
+{% block css %}
+  <style>
+    .button {
+      border-radius: 8px;
+      float:right;
+      position: absolute;
+      top:0;
+      right:0;
+      padding: 10px 10px;
+      border-radius: 16px;
+      font-size:10px;
+    }
+    .crop {
+      width:500px;
+      height:500px;
+      overflow: hidden;
+    }
+
+    .crop img {
+      width: 400px;
+      height:300px;
+      margin: -75px 0 0 -100px;
+    }
+  </style>
+{% endblock %}
+
+{% block includes %}
+  {% include 'includes/navbar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-4">
+    {% if su.user_profile.profile_pic %}
+    <img src="{{ su.user_profile.profile_pic.url }}" width="220px" height="220px" alt="default profile pic" class="rounded-circle">
+    {% else %}
+    <img src="{% static 'accounts_app/images/profile.png' %}" width="220px" height="220px" alt="default profile pic" class="rounded-circle">
+    {% endif %}
+  </div>
+
+  <div class="col-sm-8">
+    <h3><strong>{{ su.user_profile.first_name|title }} {{ su.user_profile.last_name|title }}</strong>
+
+    {% if not already_followed %}
+      <a href="{% url 'follow' username=su.username  %}" class="btn btn-primary">Follow</a>
+    {% else %}
+      <a href="{% url 'un-follow' username=su.username %}"class="btn btn-primary">Unfollow</a>
+    {% endif %}
+    </h3>
+    <h4>{{ su.posts.count }} Posts &nbsp;&nbsp; {{ su.followers.count }} Follwers &nbsp;&nbsp; {{ su.following.count }} Following  &nbsp;&nbsp;</h4>
+    <br>
+    {% if su.user_profile.about %}
+    <h4>About: {{ su.user_profile.about }}</h4>
+    {% endif %}
+  </div>
+</div>
+
+<br><br><br>
+<h3>Posts</h3>
+<div class="row">
+  {% for user_post in su.posts.all %}
+  <div class="crop">
+      <img src="{{ user_post.image.url }}" alt="{{ user_post.caption }}">
+      <h4>{{ user_post.caption }}</h4>
+  </div>
+  {% endfor %}
+
+{% endblock %}

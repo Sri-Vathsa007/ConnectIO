@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+
+{% block includes %}
+  {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block css %}
+<style>
+    .button {
+      border-radius: 8px;
+      float:right;
+      position: absolute;
+      top:0;
+      right:0;
+      padding: 10px 10px;
+      border-radius: 16px;
+      font-size:10px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="button">
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Post</button>
+
+</div>
+
+
+<!-- Modal -->
+<div class="homepage">
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data">
+            {{ posts_form.as_p }}
+            {% csrf_token %}
+            <button type="submit" name="post" class="btn btn-info btn-small">Post</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
